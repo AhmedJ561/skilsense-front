@@ -1,0 +1,80 @@
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: '#DDC3C3';
+}
+
+::-webkit-scrollbar-thumb {
+  background: '#1E3A8A';
+  border-radius: 9999px;
+  transition: background-color 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: '#22C55E';
+}
+
+/* Animations */
+@keyframes premiumGradientFlow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes softFloat {
+  0%, 100% {
+    transform: translateY(0px) translateX(0px);
+  }
+  25% {
+    transform: translateY(-15px) translateX(10px);
+  }
+  50% {
+    transform: translateY(-25px) translateX(-10px);
+  }
+  75% {
+    transform: translateY(-15px) translateX(5px);
+  }
+}
+
+@keyframes upDown {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-30px);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px) scale(1);
+  }
+  25% {
+    transform: translateY(-10px) scale(1.01);
+  }
+  50% {
+    transform: translateY(-25px) scale(1.03);
+  }
+  75% {
+    transform: translateY(-15px) scale(1.02);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}

@@ -1,0 +1,7 @@
+﻿src/app/candidate/findInterview/InterviewStartup.tsx(12,67): error TS6133: 'CheckCircle' is declared but its value is never read.
+src/app/candidate/findInterview/InterviewStartup.tsx(46,9): error TS6133: 'isDataLoaded' is declared but its value is never read.
+src/app/candidate/findInterview/InterviewStartup.tsx(56,27): error TS6133: 'setTimePerQuestion' is declared but its value is never read.
+src/app/candidate/layout.tsx(3,10): error TS6133: 'useEffect' is declared but its value is never read.
+src/app/candidate/layout.tsx(15,3): error TS6133: 'CircularProgress' is declared but its value is never read.
+src/app/candidate/layout.tsx(19,1): error TS6133: 'useMediaQuery' is declared but its value is never read.
+src/app/company/layout.tsx(15,3): error TS6133: 'CircularProgress' is declared but its value is never read.
