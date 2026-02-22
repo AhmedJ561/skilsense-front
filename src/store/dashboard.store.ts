@@ -1,7 +1,6 @@
 import { create } from 'zustand'
 import { Skill } from '@/types'
-
-const API_BASE_URL = 'http://localhost:3001'
+import { API_BASE_URL } from '@/config/api'
 
 export interface DashboardStats {
     totalInterviews: number

@@ -1,6 +1,7 @@
 
 import { create } from 'zustand'
 import { AppUser } from '@/types'
+import { API_BASE_URL } from '@/config/api'
 
 
 interface UserState {
@@ -13,9 +14,6 @@ interface UserState {
   fetchUserDetail: () => Promise<{ success: boolean; message: string; user?: any }>
 }
 
-
-// const API_BASE_URL = 'https://skill-sense-back.vercel.app'
-const API_BASE_URL = 'http://localhost:3001'
 export const useUserStore = create<UserState>((set) => ({
   user: null,
   isAuthenticated: false,

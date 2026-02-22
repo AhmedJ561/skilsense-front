@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import { API_BASE_URL } from '@/config/api'
 
 interface MockInterviewState {
   isLoading: boolean
@@ -27,8 +28,6 @@ interface MockInterviewState {
     result?: any
   }>
 }
-// const API_BASE_URL = 'https://skill-sense-back.vercel.app'
-const API_BASE_URL = 'http://localhost:3001'
 
 export const useMockInterviewStore = create<MockInterviewState>((set) => ({
   isLoading: false,

@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import { API_BASE_URL } from '@/config/api'
 
 interface CreateInterviewDto {
   jobTitle: string
@@ -41,9 +42,6 @@ interface InterviewState {
   markShortlist: (id: string, shortlisted: boolean) => Promise<{ success: boolean; message: string }>
   deleteCandidate: (id: string) => Promise<{ success: boolean; message: string }>
 }
-
-// const API_BASE_URL = 'https://skill-sense-back.vercel.app'
-const API_BASE_URL = 'http://localhost:3001'
 
 export const useInterviewStore = create<InterviewState>((set) => ({
   interviews: [],

@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { AppUser } from '@/types'
+import { API_BASE_URL } from '@/config/api'
 
 
 interface AuthState {
@@ -19,8 +20,6 @@ interface AuthState {
   setError: (error: string | null) => void
 }
 
-// const API_BASE_URL = 'https://skill-sense-back.vercel.app'
-const API_BASE_URL = 'http://localhost:3001'
 export const useAuthStore = create<AuthState>((set) => ({
   user: null,
   isAuthenticated: false,
