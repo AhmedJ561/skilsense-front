@@ -20,6 +20,7 @@ export default function HeroSection() {
         <Box
           className="wow animate__animated animate__fadeInUp"
           data-wow-once="true"
+          suppressHydrationWarning
           sx={{
             flex: 1,
             mt: { xs: 4, md: 4 },
@@ -119,6 +120,7 @@ export default function HeroSection() {
         <Box
           className="wow animate__animated animate__fadeInUp"
           data-wow-once="true"
+          suppressHydrationWarning
            sx={{
     flex: 1,
     maxWidth: { xs: "100%", lg: "50%" },

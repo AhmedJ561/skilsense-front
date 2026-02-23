@@ -11,6 +11,7 @@ export default function Footer() {
     <Box
       maxWidth='xl'
       className="wow animate__animated animate__fadeInUp"
+      suppressHydrationWarning
       sx={{
         background: '#1B1E32',
         color: theme.palette.text.primary,

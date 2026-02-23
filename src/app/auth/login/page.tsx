@@ -251,7 +251,7 @@ export default function LoginPage() {
             <Box sx={{ mt: 2, textAlign: 'center' }}>
               <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.8)' }}>
                 Don&apos;t have an account?{' '}
-                <Link href="/auth/register?role=candidate" passHref legacyBehavior>
+                <Link href="/auth/register?role=candidate" passHref>
                   <MuiLink sx={{ color: 'white', fontWeight: 600, '&:hover': { color: '#dbf1f2', textDecoration: 'underline' } }}>
                     Register here
                   </MuiLink>

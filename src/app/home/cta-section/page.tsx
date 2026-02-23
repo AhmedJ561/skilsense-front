@@ -11,7 +11,7 @@ export default function CTASection() {
     return (
       <Box
         maxWidth='xl'
-        className="wow animate__animated animate__fadeInUp" data-wow-once="true"
+        className="wow animate__animated animate__fadeInUp" data-wow-once="true" suppressHydrationWarning
         sx={{
           backgroundColor: 'background.paper',
           py: { xs: 4, sm: 4, md: 6 },

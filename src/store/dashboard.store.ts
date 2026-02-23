@@ -2,6 +2,12 @@ import { create } from 'zustand'
 import { Skill } from '@/types'
 import { API_BASE_URL } from '@/config/api'
 
+// Helper to safely get token (only works on client)
+const getToken = () => {
+    if (typeof window === 'undefined') return null
+    return sessionStorage.getItem('token')
+}
+
 export interface DashboardStats {
     totalInterviews: number
     completedInterviews: number
@@ -169,7 +175,14 @@ export const useDashboardStore = create<DashboardState>(() => ({
     },
 
     fetchOverallMockFeedback: async () => {
-        const token = sessionStorage.getItem('token')
+        const token = getToken()
+        console.log('[Dashboard] Fetching overall mock feedback. Token exists:', !!token)
+        
+        if (!token) {
+            console.warn('[Dashboard] No token found for overall feedback')
+            return { success: false, message: 'Authentication required' }
+        }
+        
         try {
             const response = await fetch(`${API_BASE_URL}/mock-interview/overall-feedback`, {
                 method: 'GET',
@@ -178,18 +191,28 @@ export const useDashboardStore = create<DashboardState>(() => ({
                     Authorization: `Bearer ${token}`,
                 },
             })
+            console.log('[Dashboard] Response status:', response.status)
             const result = await response.json()
             if (!response.ok) {
+                console.error('[Dashboard] Error response:', result)
                 throw new Error(result.message || 'Failed to fetch overall feedback')
             }
             return { success: true, message: result.message, result: result.result }
         } catch (error: any) {
+            console.error('[Dashboard] Error fetching overall feedback:', error.message)
             return { success: false, message: error.message }
         }
     },
 
     fetchMockFeedbackByAttemptId: async (attemptId: string) => {
-        const token = sessionStorage.getItem('token')
+        const token = getToken()
+        console.log('[Dashboard] Fetching mock feedback for attempt:', attemptId, 'Token exists:', !!token)
+        
+        if (!token) {
+            console.warn('[Dashboard] No token found for mock feedback')
+            return { success: false, message: 'Authentication required' }
+        }
+        
         try {
             const response = await fetch(`${API_BASE_URL}/mock-interview/feedback/${attemptId}`, {
                 method: 'GET',
@@ -198,12 +221,15 @@ export const useDashboardStore = create<DashboardState>(() => ({
                     Authorization: `Bearer ${token}`,
                 },
             })
+            console.log('[Dashboard] Response status:', response.status)
             const result = await response.json()
             if (!response.ok) {
+                console.error('[Dashboard] Error response:', result)
                 throw new Error(result.message || 'Failed to fetch feedback')
             }
             return { success: true, message: result.message || 'Feedback fetched', result: result.result }
         } catch (error: any) {
+            console.error('[Dashboard] Error fetching mock feedback:', error.message)
             return { success: false, message: error.message }
         }
     },
@@ -249,24 +275,28 @@ export const useDashboardStore = create<DashboardState>(() => ({
     },
 
     calculatePerformanceTrend: (history: MockInterviewHistory[], attendedInterviews: InterviewRecord[]) => {
-        const monthlyData = new Map<string, { totalScore: number; count: number }>()
+        const trendData: Array<{ date: string; score: number; source: string }> = []
 
+        // Add mock interview history data
         if (history && history.length > 0) {
             const sortedMockHistory = [...history].sort(
                 (a, b) => new Date(a.startedAt).getTime() - new Date(b.startedAt).getTime()
             )
             sortedMockHistory.forEach((item) => {
-                if (item.totalScore && item.totalScore > 0) {
-                    const date = new Date(item.startedAt)
-                    const monthKey = date.toLocaleString('default', { month: 'short' })
-                    const existing = monthlyData.get(monthKey) || { totalScore: 0, count: 0 }
-                    existing.totalScore += item.totalScore
-                    existing.count += 1
-                    monthlyData.set(monthKey, existing)
+                if (item.totalScore && item.totalScore > 0 && item.status === 'SUBMITTED') {
+                    trendData.push({
+                        date: new Date(item.startedAt).toLocaleDateString('en-US', {
+                            month: 'short',
+                            day: 'numeric',
+                        }),
+                        score: Math.round(item.totalScore),
+                        source: 'Mock Interview',
+                    })
                 }
             })
         }
 
+        // Add attended company interviews data
         const scoredAttendedInterviews = attendedInterviews.filter(
             (interview) =>
                 interview.attended &&
@@ -275,18 +305,29 @@ export const useDashboardStore = create<DashboardState>(() => ({
 
         scoredAttendedInterviews.forEach((interview) => {
             const score = interview.score || 75
-            const date = new Date(interview.createdAt)
-            const monthKey = date.toLocaleString('default', { month: 'short' })
-            const existing = monthlyData.get(monthKey) || { totalScore: 0, count: 0 }
-            existing.totalScore += score
-            existing.count += 1
-            monthlyData.set(monthKey, existing)
+            trendData.push({
+                date: new Date(interview.createdAt).toLocaleDateString('en-US', {
+                    month: 'short',
+                    day: 'numeric',
+                }),
+                score: Math.round(score),
+                source: 'Company Interview',
+            })
         })
 
-        return Array.from(monthlyData.entries()).map(([month, data]) => ({
-            month,
-            score: Math.round(data.totalScore / data.count),
-            interviewCount: data.count,
+        // Sort all data by date
+        trendData.sort((a, b) => {
+            const dateA = new Date(a.date).getTime()
+            const dateB = new Date(b.date).getTime()
+            return dateA - dateB
+        })
+
+        // Convert to format expected by chart (with month key for XAxis)
+        return trendData.map((item) => ({
+            month: item.date,
+            score: item.score,
+            interviewCount: 1,
+            source: item.source,
         }))
     },
 

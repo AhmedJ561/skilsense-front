@@ -96,17 +96,30 @@ export const useMockInterviewStore = create<MockInterviewState>((set) => ({
   getMockFeedbackByAttemptId: async (attemptId: string) => {
     set({ isLoading: true });
     try {
+      const token = sessionStorage.getItem('token');
+      console.log('[API] Fetching feedback for attempt:', attemptId, 'Token exists:', !!token);
+      
+      if (!token) {
+        throw new Error('Authentication token not found. Please log in again.');
+      }
+
       const response = await fetch(`${API_BASE_URL}/mock-interview/feedback/${attemptId}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+          'Authorization': `Bearer ${token}`
         }
       });
+      
+      console.log('[API] Response status:', response.status);
       const result = await response.json();
+      
       if (!response.ok) {
+        console.error('[API] Error response:', result);
         throw new Error(result.message || 'Failed to fetch mock feedback');
       }
+      
+      console.log('[API] Success:', result);
       return result;
     } catch (error) {
       console.error('Error fetching mock feedback:', error);
@@ -119,20 +132,30 @@ export const useMockInterviewStore = create<MockInterviewState>((set) => ({
   getOverallFeedback: async () => {
     set({ isLoading: true });
     try {
+      const token = sessionStorage.getItem('token');
+      console.log('[API] Fetching overall feedback. Token exists:', !!token);
+      
+      if (!token) {
+        throw new Error('Authentication token not found. Please log in again.');
+      }
+
       const response = await fetch(`${API_BASE_URL}/mock-interview/overall-feedback`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+          'Authorization': `Bearer ${token}`
         }
       });
 
+      console.log('[API] Response status:', response.status);
       const result = await response.json();
 
       if (!response.ok) {
+        console.error('[API] Error response:', result);
         throw new Error(result.message || 'Failed to fetch overall feedback');
       }
 
+      console.log('[API] Success:', result);
       return result;
     } catch (error: any) {
       console.error('Error fetching overall feedback:', error);

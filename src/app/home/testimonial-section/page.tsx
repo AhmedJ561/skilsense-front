@@ -10,7 +10,7 @@ export default function TestimonialSection() {
     return (
         <>
          {/* Testimonials Section */}
-              <Box className="wow animate__animated animate__fadeInUp" data-wow-once="true" sx={{ pt: { xs: 4, sm: 4, md: 6 }, position: 'relative', zIndex: 10 }}>
+              <Box className="wow animate__animated animate__fadeInUp" data-wow-once="true" suppressHydrationWarning sx={{ pt: { xs: 4, sm: 4, md: 6 }, position: 'relative', zIndex: 10 }}>
                 <Container maxWidth="xl">
                   <Box sx={{ textAlign: 'center', mb: 8 }}>
                     <Typography
@@ -61,7 +61,7 @@ export default function TestimonialSection() {
                         rating: 5
                       }
                     ].map((testimonial, idx) => (
-                      <Grid className={`wow animate__animated animate__fadeInRight`} data-wow-once="true"  size={{ xs: 12,sm: 6,md: 4 }} key={idx}>
+                      <Grid className={`wow animate__animated animate__fadeInRight`} data-wow-once="true"  size={{ xs: 12,sm: 6,md: 4 }} key={idx} suppressHydrationWarning>
                         <Card sx={{ 
                           p: 4, 
                           height: '100%',

@@ -7,7 +7,7 @@ export default function FeatureSection() {
       const theme = useTheme();
 
     return (
-             <Box className="wow animate__animated animate__fadeInUp" data-wow-once="true" sx={{ py: { xs: 4, sm: 4, md: 6 }, position: 'relative', zIndex: 10 }}>
+             <Box className="wow animate__animated animate__fadeInUp" data-wow-once="true" suppressHydrationWarning sx={{ py: { xs: 4, sm: 4, md: 6 }, position: 'relative', zIndex: 10 }}>
                <Container maxWidth="xl" sx={{ px: { xs: 2, sm: 3 } }}>
                  <Box sx={{ textAlign: 'center', mb: { xs: 6, sm: 8 } }}>
                    <Typography
@@ -84,8 +84,8 @@ export default function FeatureSection() {
                      const delay = (idx % 4) * 0.1; 
 
                      return (
-                       <Grid  className={`wow animate__animated animate__${animationDirection}`} data-wow-once="true"
-               data-wow-delay={`${delay}s`} size={{ xs: 12, sm: 6, md: 3 }} key={idx}>
+                       <Grid className={`wow animate__animated animate__${animationDirection}`} data-wow-once="true"
+               data-wow-delay={`${delay}s`} size={{ xs: 12, sm: 6, md: 3 }} key={idx} suppressHydrationWarning>
                          <Card
                            sx={{
                              background: 'background.paper',

@@ -66,7 +66,7 @@ export default function CandidateDashboard() {
     skillsCount: 0,
   })
   const [performanceTrend, setPerformanceTrend] = useState<
-    Array<{ month: string; score: number; interviewCount?: number }>
+    Array<{ month: string; score: number; interviewCount?: number; source?: string }>
   >([])
   const [skillProficiency, setSkillProficiency] = useState<SkillProficiency[]>([])
 
@@ -403,13 +403,39 @@ export default function CandidateDashboard() {
               <ResponsiveContainer width="100%" height={300}>
                 <LineChart data={performanceTrend}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-                  <XAxis dataKey="month" stroke="#94a3b8" />
+                  <XAxis 
+                    dataKey="month" 
+                    stroke="#94a3b8"
+                    angle={-45}
+                    textAnchor="end"
+                    interval={0}
+                    height={60}
+                  />
                   <YAxis stroke="#94a3b8" domain={[0, 100]} />
                   <Tooltip
                     contentStyle={{
                       backgroundColor: '#fff',
                       border: '1px solid #e2e8f0',
                       borderRadius: '8px',
+                    }}
+                    content={({ active, payload }) => {
+                      if (active && payload && payload[0]) {
+                        const data = payload[0].payload as typeof performanceTrend[0]
+                        return (
+                          <Box sx={{ p: 2 }}>
+                            <Typography variant="body2" sx={{ fontWeight: 600, mb: 0.5 }}>
+                              {data.month}
+                            </Typography>
+                            <Typography variant="body2" sx={{ color: theme.palette.primary.main }}>
+                              Score: {data.score}%
+                            </Typography>
+                            <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+                              {data.source || 'Interview'}
+                            </Typography>
+                          </Box>
+                        )
+                      }
+                      return null
                     }}
                   />
                   <Line

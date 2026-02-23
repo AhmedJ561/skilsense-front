@@ -5,7 +5,7 @@ import { ArrowRight } from "lucide-react";
 export default function HowItWorkSection() {
     return (
         <Box
-            className="wow animate__animated animate__fadeInUp" data-wow-once="true"
+            className="wow animate__animated animate__fadeInUp" data-wow-once="true" suppressHydrationWarning
             maxWidth="xl"
             sx={{
                 backgroundColor: 'background.paper',
@@ -65,7 +65,7 @@ export default function HowItWorkSection() {
                         }
                     ].map((item, idx) => (
                         <Grid className={`wow animate__animated animate__fadeInLeft`} data-wow-once="true"
-                            data-wow-delay={`${idx * 0.1}s`} size={{ xs: 12, sm: 6, md: 3 }} key={idx}>
+                            data-wow-delay={`${idx * 0.1}s`} size={{ xs: 12, sm: 6, md: 3 }} key={idx} suppressHydrationWarning>
                             <Box sx={{ position: 'relative', textAlign: 'center', height: '100%',pb:{xs:3,sm:3,md:0} }}>
                                 <Card
                                     sx={{
