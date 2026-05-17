@@ -502,7 +502,7 @@ export default function FindInterviewPage() {
             <Typography id="interview-prep-title" variant="h6" sx={{ fontWeight: 700 }}>
               Interview Preparation
             </Typography>
-            <IconButton onClick={() => router.push('/candidate/findInterview')}>
+            <IconButton onClick={() => setStartingId(null)}>
               <X size={20} />
             </IconButton>
           </Box>
@@ -513,7 +513,7 @@ export default function FindInterviewPage() {
           <Box sx={{ display: 'flex', gap: 2, mt: 2 }}>
             <Button
               variant="outlined"
-              onClick={() => router.push('/candidate/findInterview')}
+              onClick={() => setStartingId(null)}
               disabled={isLoading}
               sx={{ flex: 1 }}
             >
