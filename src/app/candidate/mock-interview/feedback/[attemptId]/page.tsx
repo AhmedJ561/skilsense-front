@@ -24,11 +24,13 @@ export default function InstantFeedbackPage() {
       setIsLoading(true)
       try {
         const response = await getMockFeedbackByAttemptId(attemptId)
-        if (response.success && response.result) {
-          setFeedback(response.result)
+        // Backend double-wraps: response.result.result contains actual feedback data
+        const feedbackData = response.result?.result || response.result
+        if (response.success && feedbackData) {
+          setFeedback(feedbackData)
         }
       } catch (err) {
-        console.error(err)
+        console.error('=== FETCH ERROR ===', err)
       } finally {
         setIsLoading(false)
       }
@@ -58,25 +60,12 @@ export default function InstantFeedbackPage() {
     )
   }
 
-  const { score, skillLevel, feedback: aiFeedback, evaluation } = feedback
+  const { score, skillLevel, evaluation, feedback: feedbackData } = feedback
 
-  // Debug log to see the API response shape in browser console
-  console.log('Raw API Feedback Response:', feedback);
-  console.log('Raw aiFeedback:', aiFeedback);
-
-  // Handle both old and new feedback structures safely
-  let safeAiData = aiFeedback || {};
-  if (typeof safeAiData === 'string') {
-    try {
-      safeAiData = JSON.parse(safeAiData);
-    } catch (e) {
-      safeAiData = {};
-    }
-  }
-
-  const strengths = Array.isArray(safeAiData.strengths) ? safeAiData.strengths : (Array.isArray(feedback.strengths) ? feedback.strengths : [])
-  const improvements = Array.isArray(safeAiData.weaknesses) ? safeAiData.weaknesses : (Array.isArray(safeAiData.improvements) ? safeAiData.improvements : (Array.isArray(safeAiData.areasForImprovement) ? safeAiData.areasForImprovement : (Array.isArray(feedback.improvements) ? feedback.improvements : (Array.isArray(feedback.areasForImprovement) ? feedback.areasForImprovement : (Array.isArray(feedback.weaknesses) ? feedback.weaknesses : [])))))
-  const learningPath = Array.isArray(safeAiData.learningPath) ? safeAiData.learningPath : (Array.isArray(feedback.learningPath) ? feedback.learningPath : [])
+  // Extract strengths, weaknesses, and learningPath from feedbackData
+  const strengths = Array.isArray(feedbackData?.strengths) ? feedbackData.strengths : []
+  const improvements = Array.isArray(feedbackData?.weaknesses) ? feedbackData.weaknesses : []
+  const learningPath = Array.isArray(feedbackData?.learningPath) ? feedbackData.learningPath : []
   const COLORS = ['#80CECF', '#E98F11', '#49BBBD', '#664040']
 
   const pieData = evaluation
@@ -89,34 +78,28 @@ export default function InstantFeedbackPage() {
 
   return (
     <Box sx={{ p: { xs: 0, sm: 0, md: 3 }, minHeight: '100vh', bgcolor: 'background.default', display: 'flex', justifyContent: 'center' }}>
-      <Card sx={{ maxWidth: 1200, width: '100%', p: { xs: 2, md: 4 }, display: 'flex', flexDirection: 'column' }}>
+      <Card sx={{ maxWidth: 1200, width: '100%', p: { xs: 2, md: 4 }, display: 'flex', flexDirection: 'column', gap: 3 }}>
 
         {/* Score & Skill Level */}
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', flexDirection: { xs: 'column', md: 'row' }, alignItems: { xs: 'flex-start', md: 'center' }, width: '100%', textAlign: { xs: 'flex-start', md: 'center' } }}>
-          <Typography variant="h4" sx={{ whiteSpace: 'nowrap', fontSize: { xs: '20px', md: '30px' }, mb: { xs: 3, md: 0 } }} fontWeight="bold" color={theme.palette.text.primary}>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 2 }}>
+          <Typography variant="h4" sx={{ fontSize: { xs: '20px', md: '30px' } }} fontWeight="bold" color={theme.palette.text.primary}>
             Mock Interview Feedback
           </Typography>
-
-          <Box sx={{ mb: { xs: 3, md: 0 } }}>
-            <Typography variant="h6" sx={{ color: theme.palette.text.primary }}>Skill Level</Typography>
-            <Typography variant="body1" sx={{ color: '#49BBBD', fontWeight: 600 }}>{skillLevel}</Typography>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+            <Box sx={{ textAlign: 'center' }}>
+              <Typography variant="h6" sx={{ color: theme.palette.text.primary }}>Skill Level</Typography>
+              <Typography variant="body1" sx={{ color: '#49BBBD', fontWeight: 600 }}>{skillLevel}</Typography>
+            </Box>
+            <Box sx={{ textAlign: 'center' }}>
+              <Typography variant="h3" sx={{ color: '#49BBBD', fontWeight: 'bold' }}>{score}%</Typography>
+              <Typography variant="body2" color="text.secondary">Overall Score</Typography>
+            </Box>
           </Box>
-          <Box>
-            <Typography variant="h3" sx={{ color: '#49BBBD', fontWeight: 'bold' }}>{score}%</Typography>
-            <Typography variant="body2" color="text.secondary">Overall Score</Typography>
-          </Box>
-
-
         </Box>
-
-
-
-
-
 
         {/* Top Section: Overview & Pie Chart */}
         {pieData.length > 0 && (
-          <Box sx={{ mt: 2, mb: 4, display: 'flex', justifyContent: 'center' }}>
+          <Box sx={{ display: 'flex', justifyContent: 'center' }}>
             <Card variant="outlined" sx={{ width: '100%', maxWidth: 600, p: 3, borderRadius: 3, borderColor: alpha('#E98F11', 0.2), backgroundColor: alpha('#E98F11', 0.02) }}>
               <Typography variant="h6" sx={{ mb: 2, textAlign: 'center', fontWeight: 600 }}>
                 Evaluation Breakdown
@@ -150,8 +133,8 @@ export default function InstantFeedbackPage() {
         )}
 
         {/* Strengths & Weaknesses */}
-        <Box sx={{ mt: 2, mb: 4 }}>
-          <Grid container spacing={4}>
+        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+          <Grid container spacing={4} sx={{ width: '100%' }}>
             <Grid size={{ xs: 12, md: 6 }}>
               <Card variant="outlined" sx={{ p: 3, height: '100%', borderRadius: 3, borderColor: alpha('#16a34a', 0.2), backgroundColor: alpha('#16a34a', 0.02) }}>
                 <Typography sx={{ fontWeight: 600, display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
@@ -196,15 +179,12 @@ export default function InstantFeedbackPage() {
 
         {/* Fallback if ALL data is empty */}
         {(strengths.length === 0 && improvements.length === 0 && learningPath.length === 0 && pieData.length === 0) && (
-          <Box sx={{ p: 4, textAlign: 'center', bgcolor: 'rgba(239, 68, 68, 0.05)', borderRadius: 2, mt: 3, border: '1px dashed #ef4444' }}>
+          <Box sx={{ p: 4, textAlign: 'center', bgcolor: 'rgba(239, 68, 68, 0.05)', borderRadius: 2, border: '1px dashed #ef4444' }}>
             <Typography variant="body1" color="error">
               The AI has not provided detailed feedback for this attempt yet, or the feedback format was incompatible.
             </Typography>
           </Box>
         )}
-
-
-
 
         {/* Learning Path */}
         {learningPath?.length > 0 && (
