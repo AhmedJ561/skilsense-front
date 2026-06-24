@@ -20,11 +20,10 @@ export default function HeroSection() {
         <Box
           className="wow animate__animated animate__fadeInUp"
           data-wow-once="true"
-          suppressHydrationWarning
           sx={{
-            flex: 1,
+            flex: 1, //allows the content to expand to fill the available space
             mt: { xs: 4, md: 4 },
-           textAlign: { xs: "left", lg: "left" },
+            textAlign: { xs: "left", lg: "left" },
 
             maxWidth: { xs: "100%", lg: "50%" },
           }}
@@ -120,22 +119,21 @@ export default function HeroSection() {
         <Box
           className="wow animate__animated animate__fadeInUp"
           data-wow-once="true"
-          suppressHydrationWarning
-           sx={{
-    flex: 1,
-    maxWidth: { xs: "100%", lg: "50%" },
-    position: "relative",
-    minHeight: { xs: "420px", md: "520px", lg: "86vh" },
-    width: "100%",
-    overflow: "visible",
-  }}
+          sx={{
+            flex: 1,
+            maxWidth: { xs: "100%", lg: "50%" },
+            position: "relative",
+            minHeight: { xs: "420px", md: "520px", lg: "86vh" },
+            width: "100%",
+            overflow: "visible",
+          }}
         >
           {/* Background Box + Image 1 */}
           <Box
             sx={{
               position: { xs: "absolute", md: "absolute" },
               top: "10%",
-    left: {xs:"1%",sm:'1%',md:"12%"},
+              left: { xs: "1%", sm: "1%", md: "12%" },
               background: "#dbf1f2",
               padding: "15px",
               borderRadius: "15px",
@@ -157,28 +155,29 @@ export default function HeroSection() {
               priority
             />
             <Box sx={{ display: "flex", flexDirection: "column" }}>
-              <Typography sx={{ fontSize: "10px" }}>50k</Typography>
+              <Typography sx={{ fontSize: "10px" }}>
+                Easier Initial Screening
+              </Typography>
               <Typography sx={{ fontSize: "10px", whiteSpace: "nowrap" }}>
-                Assisted Student
+                Assit companies in hiring
               </Typography>
             </Box>
           </Box>
 
           {/* Background Box + Image 1 */}
-          <Box 
-  sx={{
-    position: "absolute",
-    top: {xs:'45%',sm:'',md:"60%"},
-    left: {xs:'-3%',sm:'1%',md:"8%"},
-    background: "linear-gradient(-45deg, #d1d0d1,#dbf1f2)",
-    padding: "12px",
-    borderRadius: "15px",
-    display: "flex",
-    gap: 1,
-    zIndex: 2,
-  }}
->
-
+          <Box
+            sx={{
+              position: "absolute",
+              top: { xs: "45%", sm: "", md: "60%" },
+              left: { xs: "-3%", sm: "1%", md: "8%" },
+              background: "linear-gradient(-45deg, #d1d0d1,#dbf1f2)",
+              padding: "12px",
+              borderRadius: "15px",
+              display: "flex",
+              gap: 1,
+              zIndex: 2,
+            }}
+          >
             <Box sx={{ display: "flex", flexDirection: "row", gap: 1 }}>
               <Image
                 src="/Home/Group 6.svg"
@@ -190,10 +189,10 @@ export default function HeroSection() {
               />
               <Box sx={{ display: "flex", flexDirection: "column" }}>
                 <Typography sx={{ fontSize: "10px" }}>
-                  User Experince Class
+                  Assist Candidates
                 </Typography>
-                <Typography sx={{ fontSize: "10px", whiteSpace: "nowrap" }}>
-                  Today at 12pm
+                <Typography sx={{ fontSize: "10px" }}>
+                  Apply for relevant job vacancies
                 </Typography>
               </Box>
             </Box>
@@ -215,7 +214,7 @@ export default function HeroSection() {
             sx={{
               position: "absolute",
               top: "20%",
-    left: {xs:'80%',sm:'80%',md:"60%"},
+              left: { xs: "80%", sm: "80%", md: "60%" },
               width: 60,
               height: 60,
             }}
@@ -233,8 +232,8 @@ export default function HeroSection() {
           <Box
             sx={{
               position: { xs: "absolute", md: "absolute" },
-              top: {xs:'60%',sm:'60%',md:"50%"},
-              left: {xs:"50%",sm:"50%",md:"60%"},
+              top: { xs: "60%", sm: "60%", md: "50%" },
+              left: { xs: "50%", sm: "50%", md: "60%" },
               background: "linear-gradient(-45deg, #d1d0d1,#dbf1f2)",
               padding: "12px",
               zIndex: 1,
@@ -265,33 +264,32 @@ export default function HeroSection() {
             </Box>
 
             <Box sx={{ display: "flex", flexDirection: "column" }}>
-              <Typography sx={{ fontSize: "10px",whiteSpace:'nowrap' }}>
-                User Experince Class
+              <Typography sx={{ fontSize: "10px" }}>
+                Assist Candidates
               </Typography>
               <Typography sx={{ fontSize: "10px", whiteSpace: "nowrap" }}>
-                Today at 12pm
+                Prepare for Interview
               </Typography>
             </Box>
           </Box>
 
           {/* Main Image */}
-         <Box
-  sx={{
-    position: "relative",
-    width: "100%",
-    left:{xs:'12%',sm:'12%',md:0},
-    height: { xs: "360px", md: "80vh" },
-  }}
->
-  <Image
-    src="/Home/women.svg"
-    alt="AI Interview Platform"
-    fill
-    style={{ objectFit: "contain" }}
-    priority
-  />
-</Box>
-
+          <Box
+            sx={{
+              position: "relative",
+              width: "100%",
+              left: { xs: "12%", sm: "12%", md: 0 },
+              height: { xs: "360px", md: "80vh" },
+            }}
+          >
+            <Image
+              src="/Home/women.svg"
+              alt="AI Interview Platform"
+              fill
+              style={{ objectFit: "contain" }}
+              priority
+            />
+          </Box>
         </Box>
       </Box>
     </Container>
